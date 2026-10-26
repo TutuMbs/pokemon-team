@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>PokéTeams</title><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" th:href="@{/css/pokemon.css}"></head>
+<body>
+<main class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4"><div><p class="eyebrow">POKÉTEAMS</p><h1>Meus times Pokémon</h1><p class="text-secondary">Monte sua equipe ideal com dados oficiais da PokéAPI.</p></div><a href="/times/novo" class="btn btn-pokemon">+ Novo time</a></div>
+  <div th:if="${#lists.isEmpty(times)}" class="empty-state text-center"><div class="pokeball">◓</div><h3>Nenhum time cadastrado</h3><p>Crie seu primeiro time e escolha até 6 Pokémon.</p><a href="/times/novo" class="btn btn-outline-dark">Montar meu time</a></div>
+  <div class="row g-4"><div class="col-md-6 col-lg-4" th:each="time : ${times}"><article class="team-card"><div class="card-top"><div><span class="badge-region" th:text="${time.regiao != null && !time.regiao.isBlank() ? time.regiao : 'Região não informada'}"></span><h2 th:text="${time.nome}"></h2><p class="text-secondary mb-0">Treinador: <span th:text="${time.treinador}"></span></p></div><span class="count" th:text="${#lists.size(time.pokemons) + '/6'}"></span></div><div class="pokemon-grid"><div class="pokemon" th:each="pokemon : ${time.pokemons}"><img th:src="${pokemon.urlImagem}" th:alt="${pokemon.nome}"><span th:text="${#strings.capitalize(pokemon.nome)}"></span><small th:text="${'Nv. ' + pokemon.nivel}"></small></div></div><div class="card-actions"><a th:href="@{/times/editar/{id}(id=${time.id})}" class="btn btn-sm btn-outline-dark">Editar</a><form th:action="@{/times/excluir/{id}(id=${time.id})}" method="post" onsubmit="return confirm('Excluir este time?')"><button class="btn btn-sm btn-outline-danger">Excluir</button></form></div></article></div></div>
+</main>
+</body></html>

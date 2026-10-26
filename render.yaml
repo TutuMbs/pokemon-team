@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: pokemon-team
+    runtime: docker
+    plan: free
+    healthCheckPath: /times
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: pokemon-team-db
+          property: connectionString
+      - key: POKEAPI_BASE_URL
+        value: https://pokeapi.co/api/v2
+
+databases:
+  - name: pokemon-team-db
+    plan: free
+    databaseName: pokemon_team
+    user: pokemon_user
